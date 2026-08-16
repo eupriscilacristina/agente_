@@ -873,7 +873,7 @@ elif menu == "🚀 Nova Demanda & Análise":
                     "fase": fase,
                     "risco_principal": risco,
                     "plano_contingencia": contingencia,
-                    "data_criacao": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                    "data_criacao": datetime.now().strftime('%Y-%m-%d')
                 }
                 
                 demandas.append(nova)
@@ -1016,7 +1016,7 @@ elif menu == "📑 Central de Relatórios":
                 <span class="result-icon">📅</span>
                 <div class="result-content">
                     <div class="result-label">Data de Criação</div>
-                    <div class="result-value">{demanda_selecionada['data_criacao']}</div>
+                    <div class="result-value">{datetime.strptime(demanda_selecionada['data_criacao'], '%Y-%m-%d').strftime('%d/%m/%Y') if '-' in demanda_selecionada['data_criacao'] else demanda_selecionada['data_criacao']}</div>
                 </div>
             </div>
         </div>
@@ -1074,7 +1074,8 @@ elif menu == "📑 Central de Relatórios":
             doc.add_paragraph(f"Descrição: {demanda_selecionada['descricao']}")
             doc.add_paragraph(f"Complexidade: {demanda_selecionada['complexidade']}/5")
             doc.add_paragraph(f"Fase: {demanda_selecionada['fase']}")
-            doc.add_paragraph(f"Data de Criação: {demanda_selecionada['data_criacao']}")
+            data_criacao_br = datetime.strptime(demanda_selecionada['data_criacao'], '%Y-%m-%d').strftime('%d/%m/%Y') if '-' in demanda_selecionada['data_criacao'] else demanda_selecionada['data_criacao']
+            doc.add_paragraph(f"Data de Criação: {data_criacao_br}")
             doc.add_paragraph(f"Prazo Estimado: {demanda_selecionada['prazo_sugerido_dias']} dias úteis")
             doc.add_paragraph("")
             

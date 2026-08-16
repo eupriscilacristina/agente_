@@ -76,7 +76,7 @@ class ProcessAgent:
             "fase": fases.get(complexidade, "Planejamento / Inicio"),
             "risco_principal": riscos.get(complexidade, "Risco nao mapeado."),
             "plano_contingencia": self._gerar_plano_contingencia(complexidade),
-            "data_criacao": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "data_criacao": datetime.now().strftime("%Y-%m-%d"),
             "status": "Em Analise"
         }
 
