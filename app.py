@@ -671,6 +671,11 @@ if menu == "🏠 Dashboard Executivo":
             if fig_prazos:
                 st.plotly_chart(fig_prazos, use_container_width=True)
         
+        # Últimas Demandas
+        st.markdown("---")
+        st.markdown("### 📋 Últimas Demandas Cadastradas")
+        st.dataframe(df.tail(5), use_container_width=True)
+        
     else:
         st.info("📭 Nenhuma demanda cadastrada ainda. Comece adicionando uma nova demanda!")
 
@@ -697,12 +702,7 @@ elif menu == "🚀 Nova Demanda & Análise":
         if btn_executar:
             if not titulo.strip():
                 st.error("❌ O título da demanda é obrigatório.")
-        # Últimas Demandas
-        st.markdown("---")
-        st.markdown("### 📋 Últimas Demandas Cadastradas")
-        st.dataframe(df.tail(5), use_container_width=True)
-        
-    else:
+            else:
                 # Lógica preditiva avançada
                 dias_estimados = complexidade * 3
                 
