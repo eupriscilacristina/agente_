@@ -25,6 +25,7 @@ agente_/
 │   └── demands_db.json       # Banco de dados local leve para historico
 │
 ├── main.py                   # Ponto de entrada do sistema
+├── cli.py                    # Interface de linha de comando interativa
 ├── requirements.txt          # Dependencias do projeto
 ├── .gitignore                # Arquivos ignorados pelo Git
 └── README.md                 # Documentacao
@@ -36,6 +37,8 @@ agente_/
 - **Pandas** - Manipulacao de dados e planilhas
 - **openpyxl** - Geracao de arquivos Excel
 - **python-docx** - Geracao de documentos Word
+- **rich** - Formatacao de terminal e tabelas
+- **questionary** - Interface CLI interativa
 - **JSON** - Banco de dados local leve
 
 ## Instalacao
@@ -61,6 +64,27 @@ agente_/
    ```
 
 ## Como Funciona
+
+### Modos de Execucao
+
+**1. Modo CLI Interativo (Recomendado):**
+```bash
+python cli.py
+# ou
+python main.py --cli
+```
+
+**2. Modo Simples (Exemplo padrao):**
+```bash
+python main.py
+```
+
+### Funcionalidades da CLI
+
+- **Nova Demanda:** Coleta dados interativamente e processa
+- **Listar Demandas:** Exibe todas as demandas registradas
+- **Buscar por ID:** Detalha uma demanda especifica
+- **Gerar Relatorios:** Cria arquivos Word e Excel
 
 ### Entrada
 O usuario fornece:
@@ -100,8 +124,8 @@ Cada demanda e processada seguindo o framework:
 | Estrutura do Projeto | Concluido |
 | Logica do Agente | Concluido |
 | Gerador de Relatorios | Concluido |
+| Interface CLI | Concluido |
 | Testes Unitarios | Pendente |
-| Interface CLI | Pendente |
 | Producao | Pendente |
 
 ## Responsavel
