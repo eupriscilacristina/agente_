@@ -497,6 +497,21 @@ def salvar_dados(dados):
     with open(DB_PATH, "w", encoding="utf-8") as f:
         json.dump(dados, f, ensure_ascii=False, indent=4)
 
+LOG_PATH = "data/daily_logs.json"
+
+def carregar_logs():
+    os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
+    if not os.path.exists(LOG_PATH):
+        with open(LOG_PATH, "w", encoding="utf-8") as f:
+            json.dump({}, f)
+    with open(LOG_PATH, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+def salvar_logs(logs):
+    os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
+    with open(LOG_PATH, "w", encoding="utf-8") as f:
+        json.dump(logs, f, ensure_ascii=False, indent=4)
+
 # --- MOTOR DE GERAÇÃO DE RELATÓRIOS ---
 def gerar_word(demanda):
     doc = Document()
@@ -1003,21 +1018,6 @@ elif menu == "📑 Central de Relatórios":
 elif menu == "📅 Acompanhamento Diário":
     st.markdown("## 📅 Acompanhamento Diário e Ciclo de Vida")
     st.markdown("Registre o progresso diário de cada demanda, documente avanços e acompanhe o histórico completo.")
-
-    LOG_PATH = "data/daily_logs.json"
-
-    def carregar_logs():
-        os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
-        if not os.path.exists(LOG_PATH):
-            with open(LOG_PATH, "w", encoding="utf-8") as f:
-                json.dump({}, f)
-        with open(LOG_PATH, "r", encoding="utf-8") as f:
-            return json.load(f)
-
-    def salvar_logs(logs):
-        os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
-        with open(LOG_PATH, "w", encoding="utf-8") as f:
-            json.dump(logs, f, ensure_ascii=False, indent=4)
 
     logs = carregar_logs()
 
