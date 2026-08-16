@@ -5,89 +5,610 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AG-MTE | Agente Master de Tecnologia e Processos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #F8FAFC; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .sidebar { background-color: #0F172A; color: white; min-height: 100vh; padding: 20px; }
-        .card-custom { border: none; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        .btn-primary { background-color: #2563EB; border: none; }
-        .btn-primary:hover { background-color: #1D4ED8; }
+        :root {
+            --primary: #2563EB;
+            --primary-dark: #1D4ED8;
+            --secondary: #0F172A;
+            --accent: #0EA5E9;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --bg-light: #F8FAFC;
+            --text-dark: #0F172A;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: linear-gradient(180deg, var(--secondary) 0%, #1E293B 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 30px 20px;
+            position: fixed;
+            width: 280px;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-brand-icon {
+            font-size: 2.5rem;
+            margin-right: 12px;
+        }
+
+        .sidebar-brand-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .sidebar-subtitle {
+            color: #94A3B8;
+            font-size: 0.85rem;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-nav-item {
+            margin-bottom: 8px;
+        }
+
+        .sidebar-nav-link {
+            display: flex;
+            align-items: center;
+            padding: 14px 18px;
+            color: #CBD5E1;
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .sidebar-nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .sidebar-nav-link.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .sidebar-nav-icon {
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+
+        .sidebar-footer {
+            position: absolute;
+            bottom: 30px;
+            left: 20px;
+            right: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-footer-text {
+            color: #94A3B8;
+            font-size: 0.8rem;
+            margin: 0;
+        }
+
+        .sidebar-footer-brand {
+            color: #F1F5F9;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 40px;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .page-header {
+            margin-bottom: 35px;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .page-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        /* Cards */
+        .card-custom {
+            background: white;
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .card-custom:hover {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+            transform: translateY(-2px);
+        }
+
+        .card-custom-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 24px 28px;
+        }
+
+        .card-custom-header h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .card-custom-body {
+            padding: 28px;
+        }
+
+        /* Metric Cards */
+        .metric-card {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
+            padding: 24px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .metric-card:hover {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+            transform: translateY(-3px);
+        }
+
+        .metric-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+
+        .metric-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Result Card */
+        .result-card {
+            background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%);
+            border-left: 5px solid var(--accent);
+            padding: 28px;
+            border-radius: 12px;
+            margin-top: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .result-card h3 {
+            color: #0C4A6E;
+            font-weight: 700;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .result-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 16px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .result-item:hover {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .result-icon {
+            font-size: 1.5rem;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+
+        .result-content {
+            flex: 1;
+        }
+
+        .result-label {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .result-value {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Forms */
+        .form-label {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-control, .form-select {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 18px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 14px 32px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #1E40AF 100%);
+            box-shadow: 0 6px 12px -1px rgba(37, 99, 235, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 14px 32px;
+            font-weight: 600;
+            font-size: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            box-shadow: 0 6px 12px -1px rgba(16, 185, 129, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger) 0%, #DC2626 100%);
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
+        }
+
+        /* Table */
+        .table-custom {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .table-custom thead {
+            background: linear-gradient(135deg, var(--secondary) 0%, #1E293B 100%);
+            color: white;
+        }
+
+        .table-custom thead th {
+            padding: 16px 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border: none;
+        }
+
+        .table-custom tbody td {
+            padding: 16px 20px;
+            vertical-align: middle;
+            border-color: var(--border);
+        }
+
+        .table-custom tbody tr:hover {
+            background: #F8FAFC;
+        }
+
+        /* Badges */
+        .badge-complexity {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .badge-1 { background: #DCFCE7; color: #166534; }
+        .badge-2 { background: #DBEAFE; color: #1E40AF; }
+        .badge-3 { background: #FEF3C7; color: #92400E; }
+        .badge-4 { background: #FED7AA; color: #9A3412; }
+        .badge-5 { background: #FEE2E2; color: #991B1B; }
+
+        /* Alerts */
+        .alert-custom {
+            border: none;
+            border-radius: 12px;
+            padding: 20px 24px;
+            font-weight: 500;
+        }
+
+        .alert-success-custom {
+            background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
+            border-left: 5px solid var(--success);
+            color: #166534;
+        }
+
+        .alert-warning-custom {
+            background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+            border-left: 5px solid var(--warning);
+            color: #92400E;
+        }
+
+        .alert-danger-custom {
+            background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
+            border-left: 5px solid var(--danger);
+            color: #991B1B;
+        }
+
+        .alert-info-custom {
+            background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%);
+            border-left: 5px solid var(--accent);
+            color: #0C4A6E;
+        }
+
+        /* Divider */
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 24px 0;
+        }
+
+        /* Section Headers */
+        .section-header {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .section-subheader {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 100%;
+                position: relative;
+                min-height: auto;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+        }
     </style>
 </head>
 <body>
 
-<div class="container-fluid">
-    <div class="row">
-        <!-- Menu Lateral -->
-        <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse">
-            <h4 class="text-white py-3">⚡ AG-MTE</h4>
-            <p class="text-muted small">Gestão de Tecnologia & Processos</p>
-            <ul class="nav flex-column mt-4">
-                <li class="nav-item mb-2"><a href="#" class="nav-link text-white active" onclick="mudarAba('cadastro')">➕ Nova Demanda</a></li>
-                <li class="nav-item mb-2"><a href="#" class="nav-link text-white" onclick="mudarAba('dashboard')">📊 Painel de Controle</a></li>
-            </ul>
-        </nav>
+<!-- Sidebar -->
+<nav class="sidebar">
+    <div class="sidebar-brand">
+        <span class="sidebar-brand-icon">⚡</span>
+        <span class="sidebar-brand-text">AG-MTE</span>
+    </div>
+    <p class="sidebar-subtitle">Gestão de Tecnologia & Processos</p>
+    
+    <ul class="sidebar-nav">
+        <li class="sidebar-nav-item">
+            <a href="#" class="sidebar-nav-link active" onclick="mudarAba('cadastro')">
+                <span class="sidebar-nav-icon">🚀</span>
+                Central de Execução
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="#" class="sidebar-nav-link" onclick="mudarAba('dashboard')">
+                <span class="sidebar-nav-icon">📊</span>
+                Painel de Controle
+            </a>
+        </li>
+    </ul>
+    
+    <div class="sidebar-footer">
+        <p class="sidebar-footer-text">
+            <span class="sidebar-footer-brand">AG-MTE v2.0</span><br>
+            Departamento de Tecnologia e Processos<br>
+            NIT — Núcleo de Inovação e Tecnologia
+        </p>
+    </div>
+</nav>
 
-        <!-- Conteúdo Principal -->
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-            
-            <!-- ABA 1: CADASTRO -->
-            <div id="aba-cadastro" class="container">
-                <h2>Nova Demanda / Projeto</h2>
-                <p class="text-muted">Insira a solicitação da diretoria para o agente estruturar prazos e riscos.</p>
-                
-                <div class="card card-custom p-4 bg-white">
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Título da Demanda:</label>
+<!-- Main Content -->
+<main class="main-content">
+    
+    <!-- ABA 1: CADASTRO -->
+    <div id="aba-cadastro" class="container-fluid">
+        <div class="page-header">
+            <h1 class="page-title">🚀 Central de Execução & Nova Demanda</h1>
+            <p class="page-subtitle">Insira a solicitação da diretoria para o agente estruturar prazos e riscos.</p>
+        </div>
+        
+        <div class="card card-custom">
+            <div class="card-custom-header">
+                <h3>📋 Cadastro de Nova Demanda</h3>
+            </div>
+            <div class="card-custom-body">
+                <div class="row g-4">
+                    <div class="col-md-9">
+                        <label class="form-label">Título da Demanda / Projeto:</label>
                         <input type="text" id="titulo" class="form-control" placeholder="Ex: Automação de Relatórios de TI">
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Nível de Complexidade (1 a 5):</label>
+                    <div class="col-md-3">
+                        <label class="form-label">Complexidade (1 a 5):</label>
                         <select id="complexidade" class="form-select">
                             <option value="1">1 - Muito Baixa</option>
                             <option value="2">2 - Baixa</option>
                             <option value="3" selected>3 - Média</option>
                             <option value="4">4 - Alta</option>
-                            <option value="5">5 - Crítica / Inovação Total</option>
+                            <option value="5">5 - Crítica</option>
                         </select>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Escopo Detalhado:</label>
-                        <textarea id="descricao" class="form-control" rows="3" placeholder="Descreva o que foi pedido..."></textarea>
+                    <div class="col-12">
+                        <label class="form-label">Escopo Detalhado / Requisitos:</label>
+                        <textarea id="descricao" class="form-control" rows="4" placeholder="Descreva o que foi pedido, os objetivos e restrições..."></textarea>
                     </div>
-                    <button class="btn btn-primary btn-lg" onclick="processarDemanda()">🤖 Processar com Agente</button>
-                </div>
-
-                <div id="resultado-ia" class="mt-4"></div>
-            </div>
-
-            <!-- ABA 2: DASHBOARD -->
-            <div id="aba-dashboard" class="container" style="display:none;">
-                <h2>Painel de Controle de Entregas</h2>
-                <p class="text-muted">Acompanhe o andamento de tudo o que foi iniciado.</p>
-                
-                <div class="card card-custom p-4 bg-white mb-4">
-                    <div class="table-responsive">
-                        <table class="table table-striped align-middle" id="tabela-demandas">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Título</th>
-                                    <th>Complexidade</th>
-                                    <th>Prazo (Dias)</th>
-                                    <th>Risco Mapeado</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+                    <div class="col-12">
+                        <button class="btn btn-primary btn-lg" onclick="processarDemanda()">
+                            🤖 Processar Demanda com IA
+                        </button>
                     </div>
-                    <button class="btn btn-success mt-3" onclick="exportarExcel()">📥 Exportar Planilha (CSV/Excel)</button>
                 </div>
             </div>
+        </div>
 
-        </main>
+        <div id="resultado-ia" class="mt-4"></div>
     </div>
-</div>
+
+    <!-- ABA 2: DASHBOARD -->
+    <div id="aba-dashboard" class="container-fluid" style="display:none;">
+        <div class="page-header">
+            <h1 class="page-title">📊 Painel de Controle de Entregas</h1>
+            <p class="page-subtitle">Acompanhe o andamento de tudo o que foi iniciado.</p>
+        </div>
+        
+        <!-- Métricas -->
+        <div class="row g-4 mb-4" id="metricas-container">
+            <div class="col-md-3">
+                <div class="metric-card">
+                    <div class="metric-icon">📋</div>
+                    <div class="metric-value" id="metric-total">0</div>
+                    <div class="metric-label">Total de Demandas</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="metric-card">
+                    <div class="metric-icon">⏱️</div>
+                    <div class="metric-value" id="metric-prazo">0</div>
+                    <div class="metric-label">Média de Prazo (Dias)</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="metric-card">
+                    <div class="metric-icon">🎯</div>
+                    <div class="metric-value" id="metric-complexidade">0</div>
+                    <div class="metric-label">Complexidade Média</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="metric-card">
+                    <div class="metric-icon">✅</div>
+                    <div class="metric-value">100%</div>
+                    <div class="metric-label">Status Operacional</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tabela -->
+        <div class="card card-custom">
+            <div class="card-custom-header">
+                <h3>📋 Histórico Geral de Atividades</h3>
+            </div>
+            <div class="card-custom-body">
+                <div class="table-responsive">
+                    <table class="table table-custom table-striped align-middle" id="tabela-demandas">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Título</th>
+                                <th>Complexidade</th>
+                                <th>Prazo (Dias)</th>
+                                <th>Fase</th>
+                                <th>Risco</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <button class="btn btn-success mt-3" onclick="exportarExcel()">
+                    📥 Exportar Planilha (CSV)
+                </button>
+            </div>
+        </div>
+    </div>
+
+</main>
 
 <script>
     let demandas = JSON.parse(localStorage.getItem('demandas_agmte')) || [];
@@ -95,7 +616,15 @@
     function mudarAba(aba) {
         document.getElementById('aba-cadastro').style.display = aba === 'cadastro' ? 'block' : 'none';
         document.getElementById('aba-dashboard').style.display = aba === 'dashboard' ? 'block' : 'none';
-        if(aba === 'dashboard') atualizarTabela();
+        
+        // Atualizar active nav
+        document.querySelectorAll('.sidebar-nav-link').forEach(link => link.classList.remove('active'));
+        event.target.closest('.sidebar-nav-link').classList.add('active');
+        
+        if(aba === 'dashboard') {
+            atualizarTabela();
+            atualizarMetricas();
+        }
     }
 
     function processarDemanda() {
@@ -109,8 +638,26 @@
         }
 
         let prazo = complexidade * 3;
-        let risco = complexidade > 3 ? "Possível gargalo técnico ou dependência cruzada." : "Baixo risco de desvio de rota.";
-        let contingencia = "Validação incremental semanal e ajuste ágil de escopo.";
+        
+        let risco, contingencia, fase;
+        
+        if(complexidade <= 2) {
+            risco = "Baixo risco de desvio. Tarefa operacional padrão.";
+            contingencia = "Execução direta com validação pontual.";
+            fase = complexidade === 1 ? "Execução Rápida" : "Planejamento / Início";
+        } else if(complexidade === 3) {
+            risco = "Risco moderado. Dependências externas podem impactar prazo.";
+            contingencia = "Validação incremental semanal e ajuste ágil de escopo.";
+            fase = "Desenvolvimento / Execução";
+        } else if(complexidade === 4) {
+            risco = "Risco alto. Possível gargalo técnico ou dependência cruzada.";
+            contingencia = "Reuniões de alinhamento a cada 3 dias. Plano B para integrações.";
+            fase = "Desenvolvimento / Validação";
+        } else {
+            risco = "Risco crítico. Alta complexidade com múltiplas dependências.";
+            contingencia = "Comitê de crise. Revisão diária. Escopo mínimo viável (MVP).";
+            fase = "Planejamento Estratégico / Execução Completa";
+        }
 
         let novaDemanda = {
             id: demandas.length + 1,
@@ -119,20 +666,48 @@
             descricao,
             prazo,
             risco,
-            contingencia
+            contingencia,
+            fase,
+            dataCriacao: new Date().toLocaleDateString('pt-BR')
         };
 
         demandas.push(novaDemanda);
         localStorage.setItem('demandas_agmte', JSON.stringify(demandas));
 
         document.getElementById('resultado-ia').innerHTML = `
-            <div class="alert alert-success border-0 shadow-sm p-4">
-                <h4 class="alert-heading fw-bold">✔ Demanda Processada com Sucesso!</h4>
-                <hr>
-                <p><b>⏱ Prazo Adequado (SLA):</b> ${prazo} dias úteis</p>
-                <p><b>⚠️ Risco Identificado:</b> ${risco}</p>
-                <p><b>🛡 Plano de Contingência:</b> ${contingencia}</p>
-                <button class="btn btn-dark btn-sm mt-2" onclick="mudarAba('dashboard')">Ver no Painel de Controle</button>
+            <div class="result-card">
+                <h3>✅ Demanda Processada com Sucesso!</h3>
+                <div class="result-item">
+                    <span class="result-icon">⏱️</span>
+                    <div class="result-content">
+                        <div class="result-label">Prazo Adequado (SLA)</div>
+                        <div class="result-value">${prazo} dias úteis</div>
+                    </div>
+                </div>
+                <div class="result-item">
+                    <span class="result-icon">📊</span>
+                    <div class="result-content">
+                        <div class="result-label">Fase do Projeto</div>
+                        <div class="result-value">${fase}</div>
+                    </div>
+                </div>
+                <div class="result-item">
+                    <span class="result-icon">⚠️</span>
+                    <div class="result-content">
+                        <div class="result-label">Risco Identificado</div>
+                        <div class="result-value">${risco}</div>
+                    </div>
+                </div>
+                <div class="result-item">
+                    <span class="result-icon">🛡️</span>
+                    <div class="result-content">
+                        <div class="result-label">Plano de Contingência</div>
+                        <div class="result-value">${contingencia}</div>
+                    </div>
+                </div>
+                <button class="btn btn-primary mt-3" onclick="mudarAba('dashboard')">
+                    📊 Ver no Painel de Controle
+                </button>
             </div>
         `;
         
@@ -140,17 +715,39 @@
         document.getElementById('descricao').value = '';
     }
 
+    function atualizarMetricas() {
+        document.getElementById('metric-total').textContent = demandas.length;
+        
+        if(demandas.length > 0) {
+            let mediaPrazo = demandas.reduce((sum, d) => sum + d.prazo, 0) / demandas.length;
+            let mediaComplexidade = demandas.reduce((sum, d) => sum + d.complexidade, 0) / demandas.length;
+            
+            document.getElementById('metric-prazo').textContent = mediaPrazo.toFixed(1);
+            document.getElementById('metric-complexidade').textContent = mediaComplexidade.toFixed(1);
+        } else {
+            document.getElementById('metric-prazo').textContent = '0';
+            document.getElementById('metric-complexidade').textContent = '0';
+        }
+    }
+
     function atualizarTabela() {
         let tbody = document.querySelector('#tabela-demandas tbody');
         tbody.innerHTML = '';
+        
+        if(demandas.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted py-4">Nenhuma demanda cadastrada</td></tr>';
+            return;
+        }
+        
         demandas.forEach((d, index) => {
             tbody.innerHTML += `
                 <tr>
-                    <td>#${d.id}</td>
-                    <td class="fw-bold">${d.titulo}</td>
-                    <td><span class="badge bg-secondary">${d.complexidade}</span></td>
-                    <td>${d.prazo} dias</td>
-                    <td><small class="text-danger">${d.risco}</small></td>
+                    <td><strong>#${d.id}</strong></td>
+                    <td><strong>${d.titulo}</strong></td>
+                    <td><span class="badge-complexity badge-${d.complexidade}">${d.complexidade}</span></td>
+                    <td><strong>${d.prazo} dias</strong></td>
+                    <td>${d.fase}</td>
+                    <td><small class="text-danger">${d.risco.substring(0, 50)}...</small></td>
                     <td><button class="btn btn-danger btn-sm" onclick="excluir(${index})">Excluir</button></td>
                 </tr>
             `;
@@ -158,22 +755,28 @@
     }
 
     function excluir(index) {
-        demandas.splice(index, 1);
-        localStorage.setItem('demandas_agmte', JSON.stringify(demandas));
-        atualizarTabela();
+        if(confirm('Tem certeza que deseja excluir esta demanda?')) {
+            demandas.splice(index, 1);
+            localStorage.setItem('demandas_agmte', JSON.stringify(demandas));
+            atualizarTabela();
+            atualizarMetricas();
+        }
     }
 
     function exportarExcel() {
-        let csv = "ID,Titulo,Complexidade,Prazo(Dias),Risco\n";
+        let csv = "ID,Titulo,Complexidade,Prazo(Dias),Fase,Risco,Contingencia,Data Criacao\n";
         demandas.forEach(d => {
-            csv += `${d.id},"${d.titulo}",${d.complexidade},${d.prazo},"${d.risco}"\n`;
+            csv += `${d.id},"${d.titulo}",${d.complexidade},${d.prazo},"${d.fase}","${d.risco}","${d.contingencia}","${d.dataCriacao}"\n`;
         });
         let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         let link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
-        link.download = "relatorio_demandas.csv";
+        link.download = "relatorio_demandas_agmte.csv";
         link.click();
     }
+
+    // Inicializar
+    atualizarMetricas();
 </script>
 
 </body>
