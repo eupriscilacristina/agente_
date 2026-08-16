@@ -579,15 +579,14 @@ with st.sidebar:
         ["🏠 Dashboard Executivo", "🚀 Nova Demanda & Análise", "📊 Painel de Controle", "📑 Central de Relatórios"],
         label_visibility="collapsed"
     )
-    st.markdown("<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>", unsafe_allow_html=True)
+    st.markdown("<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>", unsafe_allow_html=True)
     st.markdown("---")
     st.markdown("""
     <div style='padding: 16px; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);'>
-        <p style='margin: 0; line-height: 1.8; color: #64748B; font-size: 0.75rem;'>
+        <p style='margin: 0; line-height: 1.6; color: #64748B; font-size: 0.75rem;'>
             <strong style='color: #FFFFFF; font-size: 0.9rem; font-family: Space Grotesk, sans-serif;'>⚡ AG-MTE v2.0</strong><br>
-            Agente Master de Tecnologia e Processos<br><br>
-            © 2026 Priscila Cristina.<br>
-            Todos os direitos reservados.
+            <span style='color: #94A3B8;'>Agente Master de Tecnologia e Processos</span><br><br>
+            <span style='color: #475569;'>© 2026 Priscila Cristina.<br>Todos os direitos reservados.</span>
         </p>
     </div>
     """, unsafe_allow_html=True)
