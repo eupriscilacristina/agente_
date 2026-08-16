@@ -579,6 +579,17 @@ with st.sidebar:
         ["🏠 Dashboard Executivo", "🚀 Nova Demanda & Análise", "📊 Painel de Controle", "📑 Central de Relatórios"],
         label_visibility="collapsed"
     )
+    st.markdown("---")
+    st.markdown("""
+    <div style='padding: 20px; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); margin-top: 20px;'>
+        <p style='margin: 0; line-height: 1.8; color: #64748B; font-size: 0.8rem;'>
+            <strong style='color: #FFFFFF; font-size: 0.95rem; font-family: Space Grotesk, sans-serif;'>⚡ AG-MTE v2.0</strong><br>
+            <span style='color: #94A3B8;'>Agente Master de Tecnologia e Processos</span><br><br>
+            <span style='color: #94A3B8;'>Departamento de Tecnologia e Processos — NIT</span><br><br>
+            <span style='color: #475569;'>© 2026 Priscila Cristina. Todos os direitos reservados.</span>
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
 demandas = carregar_dados()
 
