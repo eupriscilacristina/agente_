@@ -1,13 +1,1 @@
-[
-  {
-    "id": 1,
-    "titulo": "Setup Inicial do Sistema",
-    "descricao": "Configuração da estrutura de base do Agente Master.",
-    "complexidade": 1,
-    "prazo_sugerido_dias": 3,
-    "fase": "Concluído",
-    "risco_principal": "Nenhum.",
-    "plano_contingencia": "Nenhum.",
-    "data_criacao": "2026-08-16"
-  }
-]
+[]

@@ -1055,6 +1055,122 @@ elif menu == "📑 Central de Relatórios":
                         use_container_width=True
                     )
                     st.success("✅ Planilha gerada com sucesso!")
+        
+        st.markdown("---")
+        
+        # --- RELATÓRIO COMPLETO DO PROCESSO ---
+        st.markdown("### 📋 Relatório Completo do Processo")
+        st.markdown("Documento detalhado com todas as etapas de criação, análise e acompanhamento da demanda.")
+        
+        if st.button("📥 Gerar Relatório Completo do Processo (Word)", use_container_width=True):
+            doc = Document()
+            doc.add_heading('Relatório Completo do Processo — AG-MTE', 0)
+            doc.add_paragraph(f"Documento gerado em: {datetime.now().strftime('%d/%m/%Y %H:%M')} | Agente Master de Tecnologia e Processos")
+            doc.add_paragraph("")
+            
+            # 1. Dados da Demanda
+            doc.add_heading('1. Dados da Demanda', level=1)
+            doc.add_paragraph(f"Título: {demanda_selecionada['titulo']}")
+            doc.add_paragraph(f"Descrição: {demanda_selecionada['descricao']}")
+            doc.add_paragraph(f"Complexidade: {demanda_selecionada['complexidade']}/5")
+            doc.add_paragraph(f"Fase: {demanda_selecionada['fase']}")
+            doc.add_paragraph(f"Data de Criação: {demanda_selecionada['data_criacao']}")
+            doc.add_paragraph(f"Prazo Estimado: {demanda_selecionada['prazo_sugerido_dias']} dias úteis")
+            doc.add_paragraph("")
+            
+            # 2. Análise de Riscos
+            doc.add_heading('2. Análise de Riscos', level=1)
+            doc.add_paragraph(f"Risco Principal: {demanda_selecionada['risco_principal']}")
+            doc.add_paragraph(f"Plano de Contingência: {demanda_selecionada['plano_contingencia']}")
+            doc.add_paragraph("")
+            
+            # 3. Acompanhamento Diário
+            doc.add_heading('3. Histórico de Acompanhamento Diário', level=1)
+            logs = carregar_logs()
+            str_id = str(demanda_selecionada['id'])
+            
+            if str_id in logs and logs[str_id]:
+                registros = logs[str_id]
+                doc.add_paragraph(f"Total de registros: {len(registros)}")
+                doc.add_paragraph("")
+                
+                for reg in registros:
+                    data_br = datetime.strptime(reg["data"], "%Y-%m-%d").strftime("%d/%m/%Y")
+                    registro_br = datetime.strptime(reg["registro_em"], "%Y-%m-%d %H:%M:%S").strftime("%d/%m/%Y às %H:%M")
+                    
+                    doc.add_heading(f"Dia {data_br}", level=2)
+                    doc.add_paragraph(f"Status: {reg['status_dia']}")
+                    doc.add_paragraph(f"Nota de Progresso: {reg['nota']}")
+                    doc.add_paragraph(f"Registrado em: {registro_br}")
+                    if reg.get('finalizado'):
+                        doc.add_paragraph("✅ Projeto marcado como FINALIZADO")
+                    doc.add_paragraph("")
+            else:
+                doc.add_paragraph("Nenhum registro diário encontrado para esta demanda.")
+            
+            # 4. Status Final
+            doc.add_heading('4. Status Final', level=1)
+            status_final = demanda_selecionada.get('status_projeto', 'Em Andamento')
+            doc.add_paragraph(f"Status Atual: {status_final}")
+            if demanda_selecionada.get('data_finalizacao'):
+                doc.add_paragraph(f"Data de Finalização: {demanda_selecionada['data_finalizacao']}")
+            
+            arquivo_processo = f"relatorio_processo_{demanda_selecionada['id']}.docx"
+            doc.save(arquivo_processo)
+            
+            with open(arquivo_processo, "rb") as f:
+                st.download_button(
+                    label="📥 Clique para Baixar Relatório Completo",
+                    data=f,
+                    file_name=arquivo_processo,
+                    mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    use_container_width=True,
+                    key="btn_relatorio_completo"
+                )
+            st.success("✅ Relatório completo do processo gerado com sucesso!")
+        
+        st.markdown("---")
+        
+        # --- EXPORTAÇÃO DO ACOMPANHAMENTO DIÁRIO ---
+        st.markdown("### 📅 Exportar Acompanhamento Diário")
+        st.markdown("Exporte o histórico completo de registros diários de todas as demandas.")
+        
+        if st.button("📥 Gerar Planilha de Acompanhamento Diário (Excel)", use_container_width=True):
+            logs = carregar_logs()
+            todos_registros = []
+            
+            for d in demandas:
+                str_id = str(d['id'])
+                if str_id in logs and logs[str_id]:
+                    for reg in logs[str_id]:
+                        data_br = datetime.strptime(reg["data"], "%Y-%m-%d").strftime("%d/%m/%Y")
+                        registro_br = datetime.strptime(reg["registro_em"], "%Y-%m-%d %H:%M:%S").strftime("%d/%m/%Y às %H:%M")
+                        todos_registros.append({
+                            "Demanda": d['titulo'],
+                            "Data do Registro": data_br,
+                            "Status do Dia": reg['status_dia'],
+                            "Nota de Progresso": reg['nota'],
+                            "Finalizado": "Sim" if reg.get('finalizado') else "Não",
+                            "Registrado em": registro_br
+                        })
+            
+            if todos_registros:
+                df_logs = pd.DataFrame(todos_registros)
+                arquivo_logs = "relatorio_acompanhamento_diario.xlsx"
+                df_logs.to_excel(arquivo_logs, index=False, engine='openpyxl')
+                
+                with open(arquivo_logs, "rb") as f:
+                    st.download_button(
+                        label="📥 Clique para Baixar Acompanhamento Diário",
+                        data=f,
+                        file_name=arquivo_logs,
+                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        use_container_width=True,
+                        key="btn_logs_excel"
+                    )
+                st.success("✅ Planilha de acompanhamento diário gerada com sucesso!")
+            else:
+                st.warning("⚠️ Nenhum registro diário encontrado. Registre andamentos primeiro no menu '📅 Acompanhamento Diário'.")
 
 # --- MÓDULO 5: ACOMPANHAMENTO DIÁRIO ---
 elif menu == "📅 Acompanhamento Diário":
