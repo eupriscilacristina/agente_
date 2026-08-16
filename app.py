@@ -1094,6 +1094,8 @@ elif menu == "📅 Acompanhamento Diário":
             col_d1, col_d2 = st.columns(2)
             with col_d1:
                 data_log = st.date_input("📅 Data:", value=datetime.now().date())
+                data_log_br = data_log.strftime("%d/%m/%Y")
+                st.caption(f"📆 {data_log_br}")
             with col_d2:
                 status_dia = st.selectbox("📌 Status do Dia:", [
                     "Em Andamento",
