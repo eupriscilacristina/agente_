@@ -1093,9 +1093,12 @@ elif menu == "📅 Acompanhamento Diário":
         with st.form("form_daily_log"):
             col_d1, col_d2 = st.columns(2)
             with col_d1:
-                data_log = st.date_input("📅 Data:", value=datetime.now().date())
-                data_log_br = data_log.strftime("%d/%m/%Y")
-                st.caption(f"📆 {data_log_br}")
+                data_input = st.text_input("📅 Data (DD/MM/AAAA):", value=datetime.now().strftime("%d/%m/%Y"))
+                try:
+                    data_log = datetime.strptime(data_input.strip(), "%d/%m/%Y").date()
+                except:
+                    st.error("❌ Use o formato DD/MM/AAAA (ex: 15/08/2026)")
+                    data_log = datetime.now().date()
             with col_d2:
                 status_dia = st.selectbox("📌 Status do Dia:", [
                     "Em Andamento",
