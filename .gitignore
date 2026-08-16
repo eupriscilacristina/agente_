@@ -1,0 +1,86 @@
+# ============================================
+# AG-MTE - Arquivo de Ignoracao do Git
+# ============================================
+
+# --------------------------------------------
+# Python
+# --------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+.env
+*.egg-info/
+dist/
+build/
+*.egg
+.mypy_cache/
+.pytest_cache/
+
+# --------------------------------------------
+# Node.js
+# --------------------------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+.env
+.env.local
+.env.*.local
+
+# --------------------------------------------
+# IDEs e Editores
+# --------------------------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+.project
+.settings/
+.classpath
+
+# --------------------------------------------
+# Sistema Operacional
+# --------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# --------------------------------------------
+# Segredos e Credenciais
+# --------------------------------------------
+*.pem
+*.key
+*.cert
+.env
+.env.local
+credentials.json
+secrets.json
+
+# --------------------------------------------
+# Logs
+# --------------------------------------------
+*.log
+logs/
+
+# --------------------------------------------
+# Temporarios
+# --------------------------------------------
+*.tmp
+*.bak
+*.swp
