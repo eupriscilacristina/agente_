@@ -556,7 +556,7 @@ def criar_grafico_prazos(demandas):
     )
     return fig
 
-def criar_grafico.timeline(demandas):
+def criar_grafico_timeline(demandas):
     if not demandas:
         return None
     df = pd.DataFrame(demandas)
