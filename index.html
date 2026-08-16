@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AG-MTE | Agente Master de Tecnologia e Processos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #F8FAFC; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .sidebar { background-color: #0F172A; color: white; min-height: 100vh; padding: 20px; }
+        .card-custom { border: none; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .btn-primary { background-color: #2563EB; border: none; }
+        .btn-primary:hover { background-color: #1D4ED8; }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Menu Lateral -->
+        <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+            <h4 class="text-white py-3">⚡ AG-MTE</h4>
+            <p class="text-muted small">Gestão de Tecnologia & Processos</p>
+            <ul class="nav flex-column mt-4">
+                <li class="nav-item mb-2"><a href="#" class="nav-link text-white active" onclick="mudarAba('cadastro')">➕ Nova Demanda</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link text-white" onclick="mudarAba('dashboard')">📊 Painel de Controle</a></li>
+            </ul>
+        </nav>
+
+        <!-- Conteúdo Principal -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+            
+            <!-- ABA 1: CADASTRO -->
+            <div id="aba-cadastro" class="container">
+                <h2>Nova Demanda / Projeto</h2>
+                <p class="text-muted">Insira a solicitação da diretoria para o agente estruturar prazos e riscos.</p>
+                
+                <div class="card card-custom p-4 bg-white">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Título da Demanda:</label>
+                        <input type="text" id="titulo" class="form-control" placeholder="Ex: Automação de Relatórios de TI">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Nível de Complexidade (1 a 5):</label>
+                        <select id="complexidade" class="form-select">
+                            <option value="1">1 - Muito Baixa</option>
+                            <option value="2">2 - Baixa</option>
+                            <option value="3" selected>3 - Média</option>
+                            <option value="4">4 - Alta</option>
+                            <option value="5">5 - Crítica / Inovação Total</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Escopo Detalhado:</label>
+                        <textarea id="descricao" class="form-control" rows="3" placeholder="Descreva o que foi pedido..."></textarea>
+                    </div>
+                    <button class="btn btn-primary btn-lg" onclick="processarDemanda()">🤖 Processar com Agente</button>
+                </div>
+
+                <div id="resultado-ia" class="mt-4"></div>
+            </div>
+
+            <!-- ABA 2: DASHBOARD -->
+            <div id="aba-dashboard" class="container" style="display:none;">
+                <h2>Painel de Controle de Entregas</h2>
+                <p class="text-muted">Acompanhe o andamento de tudo o que foi iniciado.</p>
+                
+                <div class="card card-custom p-4 bg-white mb-4">
+                    <div class="table-responsive">
+                        <table class="table table-striped align-middle" id="tabela-demandas">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Título</th>
+                                    <th>Complexidade</th>
+                                    <th>Prazo (Dias)</th>
+                                    <th>Risco Mapeado</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <button class="btn btn-success mt-3" onclick="exportarExcel()">📥 Exportar Planilha (CSV/Excel)</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+</div>
+
+<script>
+    let demandas = JSON.parse(localStorage.getItem('demandas_agmte')) || [];
+
+    function mudarAba(aba) {
+        document.getElementById('aba-cadastro').style.display = aba === 'cadastro' ? 'block' : 'none';
+        document.getElementById('aba-dashboard').style.display = aba === 'dashboard' ? 'block' : 'none';
+        if(aba === 'dashboard') atualizarTabela();
+    }
+
+    function processarDemanda() {
+        let titulo = document.getElementById('titulo').value;
+        let complexidade = parseInt(document.getElementById('complexidade').value);
+        let descricao = document.getElementById('descricao').value;
+
+        if(!titulo) {
+            alert('Por favor, informe o título da demanda.');
+            return;
+        }
+
+        let prazo = complexidade * 3;
+        let risco = complexidade > 3 ? "Possível gargalo técnico ou dependência cruzada." : "Baixo risco de desvio de rota.";
+        let contingencia = "Validação incremental semanal e ajuste ágil de escopo.";
+
+        let novaDemanda = {
+            id: demandas.length + 1,
+            titulo,
+            complexidade,
+            descricao,
+            prazo,
+            risco,
+            contingencia
+        };
+
+        demandas.push(novaDemanda);
+        localStorage.setItem('demandas_agmte', JSON.stringify(demandas));
+
+        document.getElementById('resultado-ia').innerHTML = `
+            <div class="alert alert-success border-0 shadow-sm p-4">
+                <h4 class="alert-heading fw-bold">✔ Demanda Processada com Sucesso!</h4>
+                <hr>
+                <p><b>⏱ Prazo Adequado (SLA):</b> ${prazo} dias úteis</p>
+                <p><b>⚠️ Risco Identificado:</b> ${risco}</p>
+                <p><b>🛡 Plano de Contingência:</b> ${contingencia}</p>
+                <button class="btn btn-dark btn-sm mt-2" onclick="mudarAba('dashboard')">Ver no Painel de Controle</button>
+            </div>
+        `;
+        
+        document.getElementById('titulo').value = '';
+        document.getElementById('descricao').value = '';
+    }
+
+    function atualizarTabela() {
+        let tbody = document.querySelector('#tabela-demandas tbody');
+        tbody.innerHTML = '';
+        demandas.forEach((d, index) => {
+            tbody.innerHTML += `
+                <tr>
+                    <td>#${d.id}</td>
+                    <td class="fw-bold">${d.titulo}</td>
+                    <td><span class="badge bg-secondary">${d.complexidade}</span></td>
+                    <td>${d.prazo} dias</td>
+                    <td><small class="text-danger">${d.risco}</small></td>
+                    <td><button class="btn btn-danger btn-sm" onclick="excluir(${index})">Excluir</button></td>
+                </tr>
+            `;
+        });
+    }
+
+    function excluir(index) {
+        demandas.splice(index, 1);
+        localStorage.setItem('demandas_agmte', JSON.stringify(demandas));
+        atualizarTabela();
+    }
+
+    function exportarExcel() {
+        let csv = "ID,Titulo,Complexidade,Prazo(Dias),Risco\n";
+        demandas.forEach(d => {
+            csv += `${d.id},"${d.titulo}",${d.complexidade},${d.prazo},"${d.risco}"\n`;
+        });
+        let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        let link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "relatorio_demandas.csv";
+        link.click();
+    }
+</script>
+
+</body>
+</html>
