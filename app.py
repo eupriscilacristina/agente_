@@ -576,9 +576,9 @@ def criar_grafico_timeline(demandas):
 with st.sidebar:
     st.markdown("## ⚡ AG-MTE")
     st.markdown("""
-    <div style='display: flex; align-items: center; gap: 8px; margin-bottom: 20px;'>
-        <span style='color: #10B981; font-size: 0.85rem;'>●</span>
-        <span style='color: #10B981; font-size: 0.85rem; font-weight: 500;'>Sistema Online</span>
+    <div style='display: flex; align-items: center; gap: 8px; margin-bottom: 16px; padding: 10px 14px; background: rgba(16, 185, 129, 0.15); border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.3);'>
+        <span style='color: #10B981; font-size: 0.9rem;'>●</span>
+        <span style='color: #10B981; font-size: 0.85rem; font-weight: 600;'>Sistema Online</span>
     </div>
     """, unsafe_allow_html=True)
     st.markdown("---")
@@ -589,6 +589,13 @@ with st.sidebar:
     )
 
 demandas = carregar_dados()
+
+# Header com nome completo
+st.markdown("""
+<div style='padding: 16px 24px; background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(14, 165, 233, 0.05) 100%); border: 1px solid rgba(37, 99, 235, 0.2); border-radius: 12px; margin-bottom: 24px;'>
+    <p style='margin: 0; font-size: 1.1rem; font-weight: 600; color: #94A3B8; letter-spacing: 0.02em;'>⚡ Agente Master de Tecnologia e Processos</p>
+</div>
+""", unsafe_allow_html=True)
 
 # --- MÓDULO 1: DASHBOARD EXECUTIVO ---
 if menu == "🏠 Dashboard Executivo":
