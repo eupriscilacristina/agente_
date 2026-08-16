@@ -658,6 +658,79 @@ if menu == "🏠 Dashboard Executivo":
         
         st.markdown("---")
         
+        # --- ALERTAS DE PRAZO ---
+        logs = carregar_logs()
+        alertas = []
+        hoje = datetime.now().date()
+
+        for d in demandas:
+            try:
+                data_criacao = datetime.strptime(d["data_criacao"], "%Y-%m-%d %H:%M:%S").date()
+            except:
+                data_criacao = datetime.now().date()
+
+            data_entrega_estimada = data_criacao + pd.Timedelta(days=d["prazo_sugerido_dias"]).to_pytimedelta()
+            dias_restantes = (data_entrega_estimada - hoje).days
+
+            # Verificar se está finalizado
+            str_id = str(d["id"])
+            finalizado = d.get("status_projeto") == "Finalizado"
+
+            # Verificar se está bloqueado no daily log
+            bloqueado = False
+            if str_id in logs and logs[str_id]:
+                ultimo_status = logs[str_id][-1].get("status_dia", "")
+                if "Bloqueado" in ultimo_status:
+                    bloqueado = True
+
+            if not finalizado:
+                if dias_restantes < 0:
+                    alertas.append({
+                        "titulo": d["titulo"],
+                        "tipo": "VENCIDO",
+                        "icone": "🔴",
+                        "cor": "#EF4444",
+                        "mensagem": f"Atrasado {abs(dias_restantes)} dia(s)",
+                        "data": data_entrega_estimada.strftime("%d/%m/%Y")
+                    })
+                elif dias_restantes <= 3:
+                    alertas.append({
+                        "titulo": d["titulo"],
+                        "tipo": "PRÓXIMO",
+                        "icone": "🟡",
+                        "cor": "#F59E0B",
+                        "mensagem": f"Faltam {dias_restantes} dia(s)",
+                        "data": data_entrega_estimada.strftime("%d/%m/%Y")
+                    })
+
+                if bloqueado:
+                    alertas.append({
+                        "titulo": d["titulo"],
+                        "tipo": "BLOQUEADO",
+                        "icone": "⛔",
+                        "cor": "#EF4444",
+                        "mensagem": "Gargalo detectado no último registro",
+                        "data": data_entrega_estimada.strftime("%d/%m/%Y")
+                    })
+
+        if alertas:
+            st.markdown("### 🚨 Alertas de Prazo")
+            for a in alertas:
+                st.markdown(f"""
+                <div style='padding:18px 22px; background:rgba(255,255,255,0.03); border-radius:14px; border:1px solid rgba(255,255,255,0.08); border-left:5px solid {a['cor']}; margin-bottom:12px; display:flex; align-items:center; gap:16px;'>
+                    <span style='font-size:1.8rem;'>{a['icone']}</span>
+                    <div style='flex:1;'>
+                        <div style='font-weight:700; color:#FFFFFF; font-size:1rem;'>{a['titulo']}</div>
+                        <div style='color:{a['cor']}; font-size:0.85rem; font-weight:600;'>{a['tipo']} — {a['mensagem']}</div>
+                        <div style='color:#64748B; font-size:0.75rem;'>Prazo estimado: {a['data']}</div>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+        else:
+            if demandas:
+                st.markdown("### 🚨 Alertas de Prazo")
+                st.success("✅ Nenhum alerta no momento. Todas as demandas estão dentro do prazo!")
+        
         # Gráficos
         col_graf1, col_graf2 = st.columns(2)
         
