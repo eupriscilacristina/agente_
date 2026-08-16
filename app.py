@@ -746,6 +746,38 @@ if menu == "🏠 Dashboard Executivo":
                 st.markdown("### 🚨 Alertas de Prazo")
                 st.success("✅ Nenhum alerta no momento. Todas as demandas estão dentro do prazo!")
         
+        # --- NOTIFICAÇÕES DO NAVEGADOR ---
+        if alertas:
+            import streamlit.components.v1 as components
+            notificacoes_js = ""
+            for a in alertas:
+                titulo_notif = f"{a['icone']} {a['tipo']}: {a['titulo']}"
+                corpo_notif = f"{a['mensagem']} | Prazo: {a['data']}"
+                notificacoes_js += f"""
+                new Notification('{titulo_notif}', {{
+                    body: '{corpo_notif}',
+                    icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">⚡</text></svg>',
+                    tag: 'ag-mte-alert-{a["tipo"]}',
+                    requireInteraction: true
+                }});
+                """
+
+            components.html(f"""
+            <script>
+                if ('Notification' in window) {{
+                    if (Notification.permission === 'default') {{
+                        Notification.requestPermission().then(function(permission) {{
+                            if (permission === 'granted') {{
+                                {notificacoes_js}
+                            }}
+                        }});
+                    }} else if (Notification.permission === 'granted') {{
+                        {notificacoes_js}
+                    }}
+                }}
+            </script>
+            """, height=0)
+        
         # Gráficos
         col_graf1, col_graf2 = st.columns(2)
         
