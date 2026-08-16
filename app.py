@@ -572,37 +572,21 @@ def criar_grafico_timeline(demandas):
 
 # --- INTERFACE PRINCIPAL ---
 
-# Hero Header
-st.markdown("""
-<div class="hero-container">
-    <h1 class="hero-title">⚡ AG-MTE</h1>
-    <p class="hero-subtitle">Agente Master de Tecnologia e Processos — Plataforma de Inteligência Operacional para Gestão de Ciclo de Vida, SLA e Governança de Entregas</p>
-    <div class="hero-badge">
-        <span>Sistema Online</span>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
 # Sidebar
 with st.sidebar:
-    st.markdown("## ⚡ Navegação")
+    st.markdown("## ⚡ AG-MTE")
+    st.markdown("""
+    <div style='display: flex; align-items: center; gap: 8px; margin-bottom: 20px;'>
+        <span style='color: #10B981; font-size: 0.85rem;'>●</span>
+        <span style='color: #10B981; font-size: 0.85rem; font-weight: 500;'>Sistema Online</span>
+    </div>
+    """, unsafe_allow_html=True)
     st.markdown("---")
     menu = st.radio(
-        "Módulo:",
+        "Navegação:",
         ["🏠 Dashboard Executivo", "🚀 Nova Demanda & Análise", "📊 Painel de Controle", "📑 Central de Relatórios"],
         label_visibility="collapsed"
     )
-    st.markdown("---")
-    st.markdown("""
-    <div style='padding: 20px; background: rgba(255,255,255,0.03); border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); margin-top: 20px;'>
-        <p style='color: #64748B; font-size: 0.8rem; margin: 0; line-height: 1.8;'>
-            <strong style='color: #94A3B8; font-size: 0.9rem;'>AG-MTE v2.0</strong><br>
-            Departamento de Tecnologia e Processos<br>
-            NIT — Núcleo de Inovação e Tecnologia<br><br>
-            <span style='color: #10B981;'>● Sistema Operacional</span>
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
 
 demandas = carregar_dados()
 
