@@ -1,142 +1,72 @@
-# AG-MTE - Agente Master de Gestao de Processos, Tecnologia e Entregas
+# AG-MTE: Agente Master de Gestão de Tecnologia e Processos
 
-## Visao Geral
+O **AG-MTE** é uma solução de inteligência operacional desenhada para otimizar o fluxo de trabalho, mensurar a produtividade técnica e automatizar a geração de relatórios gerenciais executivos para o Departamento de Tecnologia e Processos.
 
-O **AG-MTE** e um assistente de IA senior estruturado para atuar como o braco direito tecnico e estrategico do **Departamento de Tecnologia e Processos (NIT)**, otimizando o fluxo de trabalho de ponta a ponta.
+## Funcionalidades Principais
 
-## Missoes
-
-1. **Gestao de Ciclo de Vida de Demandas** - Acompanhamento rigoroso de tudo o que e iniciado, desenvolvido, inventado ou reinventado
-2. **Estimativa Preditiva de Prazos** - Analise da complexidade de tarefas para sugerir prazos viaveis e competitivos
-3. **Analise de Impacto Sistemico** - Avaliacao preventiva de como cada demanda afeta as demais areas
-4. **Gestao de Riscos e Resiliencia** - Identificacao proativa de gargalos e desenho de planos de contingencia
-5. **Geracao de Relatorios Executivos** - Estruturacao de dados para exportacao em Word/Excel
+- **Gestão Inteligente de Demandas:** Rastreamento de ponta a ponta (início, meio e fim).
+- **SLA Preditivo:** Algoritmo de estimativa de prazos baseado em complexidade técnica.
+- **Automação de Relatórios:** Geração instantânea de documentos formatados (.docx) e planilhas estratégicas (.xlsx).
+- **Gestão de Riscos:** Mapeamento proativo de gargalos e planos de contingência.
 
 ## Estrutura do Projeto
 
 ```
 agente_/
 ├── core/
-│   ├── __init__.py           # Modulo principal do AG-MTE
-│   ├── agent_logic.py        # Logica central do agente e tratamento de dados
-│   └── excel_word_gen.py     # Geradores de arquivos .xlsx e .docx
-│
+│   ├── __init__.py           # Modulo principal
+│   ├── agent_logic.py        # Logica central do agente
+│   └── excel_word_gen.py     # Geradores Excel/Word
 ├── data/
-│   └── demands_db.json       # Banco de dados local leve para historico
-│
-├── main.py                   # Ponto de entrada do sistema
-├── cli.py                    # Interface de linha de comando interativa
-├── requirements.txt          # Dependencias do projeto
-├── .gitignore                # Arquivos ignorados pelo Git
+│   └── demands_db.json       # Banco de dados local
+├── main.py                   # Ponto de entrada
+├── cli.py                    # Interface interativa
+├── requirements.txt          # Dependencias
+├── .gitignore                # Arquivos ignorados
 └── README.md                 # Documentacao
 ```
 
-## Stack Tecnologica
+## Instalação
 
-- **Python 3.10+** - Linguagem principal
-- **Pandas** - Manipulacao de dados e planilhas
-- **openpyxl** - Geracao de arquivos Excel
-- **python-docx** - Geracao de documentos Word
-- **rich** - Formatacao de terminal e tabelas
-- **questionary** - Interface CLI interativa
-- **JSON** - Banco de dados local leve
-
-## Instalacao
-
-1. Clone o repositorio:
+1. Clone o repositório:
    ```bash
    git clone https://github.com/eupriscilacristina/agente_.git
    ```
 
-2. Navegue ate a pasta do projeto:
-   ```bash
-   cd agente_
-   ```
-
-3. Instale as dependencias:
+2. Instale as dependências:
    ```bash
    pip install -r requirements.txt
    ```
 
-4. Execute o agente:
+3. Execute a interface:
    ```bash
-   python main.py
+   python cli.py
    ```
 
-## Como Funciona
+## Stack Tecnológico
 
-### Modos de Execucao
+- Python 3.x
+- Rich (UI/UX Terminal)
+- Pandas / Openpyxl (Data Processing)
+- python-docx (Document Automation)
 
-**1. Modo CLI Interativo (Recomendado):**
-```bash
-python cli.py
-# ou
-python main.py --cli
-```
+## Uso
 
-**2. Modo Simples (Exemplo padrao):**
-```bash
-python main.py
-```
+A interface CLI interativa oferece as seguintes opções:
 
-### Funcionalidades da CLI
-
-- **Nova Demanda:** Coleta dados interativamente e processa
-- **Listar Demandas:** Exibe todas as demandas registradas
-- **Buscar por ID:** Detalha uma demanda especifica
-- **Gerar Relatorios:** Cria arquivos Word e Excel
-
-### Entrada
-O usuario fornece:
-- **Titulo** da demanda
-- **Descricao** detalhada
-- **Complexidade** (1 a 5)
-
-### Processamento
-O AG-MTE:
-- Calcula prazo estimado (complexidade x 3 dias)
-- Mapeia fase do projeto
-- Identifica riscos principais
-- Gera plano de contingencia
-
-### Saida
-Sao gerados dois arquivos:
-- `status_report_diretoria.docx` - Relatorio executivo em Word
-- `relatorio_demandas.xlsx` - Planilha de acompanhamento em Excel
-
-## Framework de Saida
-
-Cada demanda e processada seguindo o framework:
-
-| Etapa | Descricao |
+| Opção | Descrição |
 |-------|-----------|
-| 1. Resumo Executivo | Entendimento do escopo e classificacao |
-| 2. Cronograma SLA | Estimativa realista com marcos e prazos |
-| 3. Impacto Cruzado | Analise multi-area (TI, Processos, Operacao) |
-| 4. Gestao de Riscos | Identificacao de riscos e planos de contingencia |
-| 5. Relatorio Diretoria | Formato Word (.docx) e Excel (.xlsx) |
-
-## Status do Projeto
-
-| Fase | Status |
-|------|--------|
-| Configuracao GitHub | Concluido |
-| Estrutura do Projeto | Concluido |
-| Logica do Agente | Concluido |
-| Gerador de Relatorios | Concluido |
-| Interface CLI | Concluido |
-| Testes Unitarios | Pendente |
-| Producao | Pendente |
+| 1. Adicionar Nova Demanda | Cadastra e analisa uma nova demanda |
+| 2. Listar Demandas | Exibe todas as demandas registradas |
+| 3. Gerar Relatório Word | Cria relatório executivo em .docx |
+| 4. Exportar Planilha Excel | Exporta dados em .xlsx |
+| 5. Sair | Encerra o programa |
 
 ## Responsavel
 
 - **Nome:** Priscila Cristina
 - **Departamento:** NIT - Departamento de Tecnologia e Processos
 - **GitHub:** [@eupriscilacristina](https://github.com/eupriscilacristina)
-
-## Licenca
-
-Projeto interno - Uso restrito a equipe NIT.
 
 ---
 
