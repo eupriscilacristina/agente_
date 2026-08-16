@@ -15,6 +15,16 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# --- CONFIGURAÇÃO DE LOCALIZAÇÃO (BRASIL) ---
+import locale
+try:
+    locale.setlocale(locale.LC_TIME, 'pt_BR.UTF-8')
+except:
+    try:
+        locale.setlocale(locale.LC_TIME, 'Portuguese_Brazil.1252')
+    except:
+        pass
+
 # --- ESTILIZAÇÃO VISUAL ESPETACULAR ---
 st.markdown("""
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -1181,15 +1191,17 @@ elif menu == "📅 Acompanhamento Diário":
                 cor_stat = status_cor_map.get(reg["status_dia"], "#94A3B8")
                 icone_final = "🎉" if reg.get("finalizado") else "📌"
                 label_final = " — FINALIZADO" if reg.get("finalizado") else ""
+                data_br = datetime.strptime(reg["data"], "%Y-%m-%d").strftime("%d/%m/%Y") if reg["data"] else reg["data"]
+                registro_br = datetime.strptime(reg["registro_em"], "%Y-%m-%d %H:%M:%S").strftime("%d/%m/%Y às %H:%M") if reg["registro_em"] else reg["registro_em"]
 
                 st.markdown(f"""
                 <div style='padding:20px; background:rgba(255,255,255,0.03); border-radius:14px; border:1px solid rgba(255,255,255,0.08); border-left:4px solid {cor_stat}; margin-bottom:14px;'>
                     <div style='display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;'>
-                        <span style='font-weight:700; color:#FFFFFF; font-size:0.95rem;'>{icone_final} Dia {reg['data']}{label_final}</span>
+                        <span style='font-weight:700; color:#FFFFFF; font-size:0.95rem;'>{icone_final} Dia {data_br}{label_final}</span>
                         <span style='padding:4px 12px; border-radius:20px; font-size:0.75rem; font-weight:600; background:rgba(255,255,255,0.06); color:{cor_stat}; border:1px solid {cor_stat}30;'>{reg['status_dia']}</span>
                     </div>
                     <p style='margin:0; color:#CBD5E1; font-size:0.9rem; line-height:1.6;'>{reg['nota']}</p>
-                    <p style='margin:8px 0 0 0; color:#475569; font-size:0.75rem;'>Registrado em: {reg['registro_em']}</p>
+                    <p style='margin:8px 0 0 0; color:#475569; font-size:0.75rem;'>Registrado em: {registro_br}</p>
                 </div>
                 """, unsafe_allow_html=True)
         else:
