@@ -697,7 +697,12 @@ elif menu == "🚀 Nova Demanda & Análise":
         if btn_executar:
             if not titulo.strip():
                 st.error("❌ O título da demanda é obrigatório.")
-            else:
+        # Últimas Demandas
+        st.markdown("---")
+        st.markdown("### 📋 Últimas Demandas Cadastradas")
+        st.dataframe(df.tail(5), use_container_width=True)
+        
+    else:
                 # Lógica preditiva avançada
                 dias_estimados = complexidade * 3
                 
