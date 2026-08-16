@@ -671,10 +671,6 @@ if menu == "🏠 Dashboard Executivo":
             if fig_prazos:
                 st.plotly_chart(fig_prazos, use_container_width=True)
         
-        # Últimas Demandas
-        st.markdown("### 📋 Últimas Demandas Cadastradas")
-        st.dataframe(df.tail(5), use_container_width=True)
-        
     else:
         st.info("📭 Nenhuma demanda cadastrada ainda. Comece adicionando uma nova demanda!")
 
