@@ -914,13 +914,3 @@ elif menu == "📑 Central de Relatórios":
                         use_container_width=True
                     )
                 st.success("✅ Planilha gerada com sucesso!")
-
-# --- FOOTER ---
-st.markdown("""
-<div class="footer">
-    <p class="footer-brand">⚡ AG-MTE v2.0</p>
-    <p>Agente Master de Tecnologia e Processos</p>
-    <p>Departamento de Tecnologia e Processos — NIT</p>
-    <p style="margin-top: 16px; font-size: 0.75rem;">© 2026 Priscila Cristina Pires. Todos os direitos reservados.</p>
-</div>
-""", unsafe_allow_html=True)
