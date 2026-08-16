@@ -579,6 +579,7 @@ with st.sidebar:
         ["🏠 Dashboard Executivo", "🚀 Nova Demanda & Análise", "📊 Painel de Controle", "📑 Central de Relatórios"],
         label_visibility="collapsed"
     )
+    st.markdown("<br><br><br><br><br><br><br><br><br><br>", unsafe_allow_html=True)
     st.markdown("---")
     st.markdown("""
     <div style='padding: 16px; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);'>
