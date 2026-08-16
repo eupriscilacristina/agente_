@@ -1,26 +1,13 @@
 [
-    {
-        "id": 1,
-        "titulo": "Automacao de Relatorios de Processos de TI",
-        "descricao": "Criar fluxo automatizado para coletar metricas de entregas e gerar visibilidade executiva.",
-        "complexidade": 4,
-        "prazo_sugerido_dias": 12,
-        "fase": "Desenvolvimento / Validação",
-        "risco_principal": "Risco alto - possivel gargalo de integracao tecnica ou dependencia de terceiros.",
-        "plano_contingencia": "Ajuste de escopo rapido e validacao incremental com a diretoria. Definir marcos claros.",
-        "data_criacao": "2026-08-16 14:07:49",
-        "status": "Em Analise"
-    },
-    {
-        "id": 2,
-        "titulo": "Automacao de Relatorios de Processos de TI",
-        "descricao": "Criar fluxo automatizado para coletar metricas de entregas e gerar visibilidade executiva.",
-        "complexidade": 4,
-        "prazo_sugerido_dias": 12,
-        "fase": "Desenvolvimento / Validação",
-        "risco_principal": "Risco alto - possivel gargalo de integracao tecnica ou dependencia de terceiros.",
-        "plano_contingencia": "Ajuste de escopo rapido e validacao incremental com a diretoria. Definir marcos claros.",
-        "data_criacao": "2026-08-16 14:13:22",
-        "status": "Em Analise"
-    }
+  {
+    "id": 1,
+    "titulo": "Setup Inicial do Sistema",
+    "descricao": "Configuração da estrutura de base do Agente Master.",
+    "complexidade": 1,
+    "prazo_sugerido_dias": 3,
+    "fase": "Concluído",
+    "risco_principal": "Nenhum.",
+    "plano_contingencia": "Nenhum.",
+    "data_criacao": "2026-08-16"
+  }
 ]
