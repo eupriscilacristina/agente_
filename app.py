@@ -576,7 +576,7 @@ def criar_grafico_timeline(demandas):
 with st.sidebar:
     menu = st.radio(
         "Navegação:",
-        ["🏠 Dashboard Executivo", "🚀 Nova Demanda & Análise", "📊 Painel de Controle", "📑 Central de Relatórios"],
+        ["🏠 Dashboard Executivo", "🚀 Nova Demanda & Análise", "📅 Acompanhamento Diário", "📊 Painel de Controle", "📑 Central de Relatórios"],
         label_visibility="collapsed"
     )
     st.markdown("<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>", unsafe_allow_html=True)
@@ -924,4 +924,168 @@ elif menu == "📑 Central de Relatórios":
                         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                         use_container_width=True
                     )
-                st.success("✅ Planilha gerada com sucesso!")
+                    st.success("✅ Planilha gerada com sucesso!")
+
+# --- MÓDULO 5: ACOMPANHAMENTO DIÁRIO ---
+elif menu == "📅 Acompanhamento Diário":
+    st.markdown("## 📅 Acompanhamento Diário e Ciclo de Vida")
+    st.markdown("Registre o progresso diário de cada demanda, documente avanços e acompanhe o histórico completo.")
+
+    LOG_PATH = "data/daily_logs.json"
+
+    def carregar_logs():
+        os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
+        if not os.path.exists(LOG_PATH):
+            with open(LOG_PATH, "w", encoding="utf-8") as f:
+                json.dump({}, f)
+        with open(LOG_PATH, "r", encoding="utf-8") as f:
+            return json.load(f)
+
+    def salvar_logs(logs):
+        os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
+        with open(LOG_PATH, "w", encoding="utf-8") as f:
+            json.dump(logs, f, ensure_ascii=False, indent=4)
+
+    logs = carregar_logs()
+
+    if not demandas:
+        st.info("📭 Cadastre uma demanda primeiro no menu '🚀 Nova Demanda & Análise'.")
+    else:
+        titulos = [d["titulo"] for d in demandas]
+        ids = [d["id"] for d in demandas]
+        mapa_id = {d["titulo"]: d["id"] for d in demandas}
+
+        col_sel1, col_sel2 = st.columns([3, 1])
+        with col_sel1:
+            titulo_sel = st.selectbox("🔍 Selecione a Demanda / Projeto:", titulos)
+        with col_sel2:
+            id_sel = mapa_id[titulo_sel]
+            demanda_atual = next(d for d in demandas if d["id"] == id_sel)
+            status_proj = demanda_atual.get("status_projeto", "Em Andamento")
+            cor_status = "#10B981" if status_proj == "Finalizado" else "#F59E0B"
+            st.markdown(f"""
+            <div style='text-align:center; padding:14px; background:rgba(255,255,255,0.03); border-radius:12px; border:1px solid rgba(255,255,255,0.08); margin-top:28px;'>
+                <span style='font-size:0.75rem; color:#64748B; text-transform:uppercase; letter-spacing:0.08em;'>Status</span><br>
+                <span style='font-size:1.1rem; font-weight:700; color:{cor_status};'>{status_proj}</span>
+            </div>
+            """, unsafe_allow_html=True)
+
+        st.markdown("---")
+
+        # --- FORMULÁRIO DE REGISTRO DIÁRIO ---
+        st.markdown("### ✏️ Registrar Andamento do Dia")
+
+        with st.form("form_daily_log"):
+            col_d1, col_d2 = st.columns(2)
+            with col_d1:
+                data_log = st.date_input("📅 Data:", value=datetime.now().date())
+            with col_d2:
+                status_dia = st.selectbox("📌 Status do Dia:", [
+                    "Em Andamento",
+                    "Bloqueado / Gargalo",
+                    "Concluído Parcialmente",
+                    "Finalizado"
+                ])
+
+            nota_progresso = st.text_area("📝 Nota de Progresso:", placeholder="Descreva o que foi feito, entregue ou ajustado hoje...", height=140)
+
+            col_btn1, col_btn2 = st.columns(2)
+            with col_btn1:
+                finalizar_projeto = st.checkbox("✅ Marcar projeto como Finalizado com Sucesso")
+            with col_btn2:
+                st.markdown("")  # espaçador
+
+            btn_salvar = st.form_submit_button("💾 Salvar Registro Diário", use_container_width=True)
+
+            if btn_salvar:
+                if not nota_progresso.strip():
+                    st.error("❌ Preencha a nota de progresso.")
+                else:
+                    str_id = str(id_sel)
+                    if str_id not in logs:
+                        logs[str_id] = []
+
+                    registro = {
+                        "data": data_log.strftime("%Y-%m-%d"),
+                        "status_dia": status_dia,
+                        "nota": nota_progresso.strip(),
+                        "finalizado": finalizar_projeto,
+                        "registro_em": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    }
+                    logs[str_id].append(registro)
+
+                    if finalizar_projeto:
+                        demanda_atual["status_projeto"] = "Finalizado"
+                        demanda_atual["data_finalizacao"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                        salvar_dados(demandas)
+
+                    salvar_logs(logs)
+                    st.success("✅ Registro diário salvo com sucesso!")
+                    if finalizar_projeto:
+                        st.success("🎉 Projeto marcado como FINALIZADO!")
+
+        st.markdown("---")
+
+        # --- HISTÓRICO / TIMELINE ---
+        st.markdown(f"### 📜 Histórico de Andamento — {titulo_sel}")
+
+        str_id = str(id_sel)
+        if str_id in logs and logs[str_id]:
+            registros = logs[str_id]
+
+            total_registros = len(registros)
+            registros_finalizados = sum(1 for r in registros if r.get("finalizado"))
+            total_notas = len(registros)
+
+            col_h1, col_h2, col_h3 = st.columns(3)
+            with col_h1:
+                st.markdown(f"""
+                <div class="metric-card" style="--accent-color: #3B82F6; --icon-bg: rgba(59, 130, 246, 0.2);">
+                    <div class="metric-icon-wrapper">📝</div>
+                    <div class="metric-value">{total_registros}</div>
+                    <div class="metric-label">Registros Totais</div>
+                </div>
+                """, unsafe_allow_html=True)
+            with col_h2:
+                st.markdown(f"""
+                <div class="metric-card" style="--accent-color: #10B981; --icon-bg: rgba(16, 185, 129, 0.2);">
+                    <div class="metric-icon-wrapper">✅</div>
+                    <div class="metric-value">{registros_finalizados}</div>
+                    <div class="metric-label">Finalizações</div>
+                </div>
+                """, unsafe_allow_html=True)
+            with col_h3:
+                dias_desde_inicio = (datetime.now().date() - datetime.strptime(registros[0]["data"], "%Y-%m-%d").date()).days
+                st.markdown(f"""
+                <div class="metric-card" style="--accent-color: #F59E0B; --icon-bg: rgba(245, 158, 11, 0.2);">
+                    <div class="metric-icon-wrapper">⏱️</div>
+                    <div class="metric-value">{dias_desde_inicio}</div>
+                    <div class="metric-label">Dias Desde Início</div>
+                </div>
+                """, unsafe_allow_html=True)
+
+            st.markdown("---")
+
+            for i, reg in enumerate(reversed(registros)):
+                status_cor_map = {
+                    "Em Andamento": "#3B82F6",
+                    "Bloqueado / Gargalo": "#EF4444",
+                    "Concluído Parcialmente": "#F59E0B",
+                    "Finalizado": "#10B981"
+                }
+                cor_stat = status_cor_map.get(reg["status_dia"], "#94A3B8")
+                icone_final = "🎉" if reg.get("finalizado") else "📌"
+                label_final = " — FINALIZADO" if reg.get("finalizado") else ""
+
+                st.markdown(f"""
+                <div style='padding:20px; background:rgba(255,255,255,0.03); border-radius:14px; border:1px solid rgba(255,255,255,0.08); border-left:4px solid {cor_stat}; margin-bottom:14px;'>
+                    <div style='display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;'>
+                        <span style='font-weight:700; color:#FFFFFF; font-size:0.95rem;'>{icone_final} Dia {reg['data']}{label_final}</span>
+                        <span style='padding:4px 12px; border-radius:20px; font-size:0.75rem; font-weight:600; background:rgba(255,255,255,0.06); color:{cor_stat}; border:1px solid {cor_stat}30;'>{reg['status_dia']}</span>
+                    </div>
+                    <p style='margin:0; color:#CBD5E1; font-size:0.9rem; line-height:1.6;'>{reg['nota']}</p>
+                    <p style='margin:8px 0 0 0; color:#475569; font-size:0.75rem;'>Registrado em: {reg['registro_em']}</p>
+                </div>
+                """, unsafe_allow_html=True)
+        else:
+            st.info("📭 Nenhum registro diário para esta demanda ainda. Use o formulário acima para registrar o primeiro andamento.")
