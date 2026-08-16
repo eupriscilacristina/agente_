@@ -961,6 +961,65 @@ elif menu == "📊 Painel de Controle":
         st.markdown(f"### 📋 Demandas ({len(df_filtrado)} registros)")
         st.dataframe(df_filtrado, use_container_width=True, height=400)
         
+        # --- CANCELAR / EXCLUIR DEMANDA ---
+        st.markdown("---")
+        st.markdown("### ❌ Cancelar Demanda")
+        st.markdown("Selecione a demanda que deseja cancelar/excluir permanentemente.")
+        
+        titulos_demandas = [d['titulo'] for d in demandas]
+        cancel_col1, cancel_col2 = st.columns([3, 1])
+        
+        with cancel_col1:
+            titulo_cancelar = st.selectbox("🔍 Selecione a Demanda para Cancelar:", titulos_demandas, key="select_cancelar")
+        with cancel_col2:
+            st.markdown("<br>", unsafe_allow_html=True)
+            if st.button("❌ Cancelar / Excluir", use_container_width=True, type="secondary", key="btn_cancelar"):
+                st.session_state['confirmar_cancelamento'] = titulo_cancelar
+                st.rerun()
+        
+        if 'confirmar_cancelamento' in st.session_state and st.session_state['confirmar_cancelamento']:
+            titulo_conf = st.session_state['confirmar_cancelamento']
+            st.warning(f"⚠️ Tem certeza que deseja excluir a demanda **{titulo_conf}**? Esta ação não pode ser desfeita.")
+            
+            conf_col1, conf_col2, conf_col3 = st.columns([1, 1, 1])
+            with conf_col2:
+                if st.button("✅ Sim, Excluir", use_container_width=True, type="primary", key="btn_confirmar_excluir"):
+                    demandas = [d for d in demandas if d['titulo'] != titulo_conf]
+                    salvar_dados(demandas)
+                    
+                    # Remover logs diários também
+                    logs = carregar_logs()
+                    id_removido = None
+                    for d_orig in demandas:
+                        pass
+                    logs_filtrados = {}
+                    str_id_removido = None
+                    for k, v in logs.items():
+                        # Encontrar o ID que foi removido
+                        pass
+                    
+                    # Reindexar IDs
+                    for i, d in enumerate(demandas):
+                        d['id'] = i + 1
+                    salvar_dados(demandas)
+                    
+                    # Limpar logs do ID removido
+                    logs_novos = {}
+                    for i, d in enumerate(demandas):
+                        novo_id = str(d['id'])
+                        antigo_id = str(d.get('_id_antigo', d['id']))
+                        if antigo_id in logs:
+                            logs_novos[novo_id] = logs[antigo_id]
+                    salvar_logs(logs_novos)
+                    
+                    del st.session_state['confirmar_cancelamento']
+                    st.success(f"✅ Demanda **{titulo_conf}** excluída com sucesso!")
+                    st.rerun()
+                
+                if st.button("❌ Não, Manter", use_container_width=True, key="btn_manter"):
+                    del st.session_state['confirmar_cancelamento']
+                    st.rerun()
+        
         # Gráfico de timeline
         if len(df) > 1:
             st.markdown("### 📈 Evolução dos Prazos")
