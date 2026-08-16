@@ -574,15 +574,6 @@ def criar_grafico_timeline(demandas):
 
 # Sidebar
 with st.sidebar:
-    st.markdown("""
-    <div style='display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; padding: 16px 20px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);'>
-        <span style='font-size: 1.3rem; font-weight: 700; color: #FFFFFF; font-family: Space Grotesk, sans-serif;'>⚡ AG-MTE</span>
-        <span style='display: flex; align-items: center; gap: 6px; color: #10B981; font-size: 0.75rem; font-weight: 600;'>
-            <span style='width: 8px; height: 8px; background: #10B981; border-radius: 50%;'></span>
-            Online
-        </span>
-    </div>
-    """, unsafe_allow_html=True)
     menu = st.radio(
         "Navegação:",
         ["🏠 Dashboard Executivo", "🚀 Nova Demanda & Análise", "📊 Painel de Controle", "📑 Central de Relatórios"],
@@ -591,10 +582,14 @@ with st.sidebar:
 
 demandas = carregar_dados()
 
-# Header com nome completo centralizado
+# Header com nome completo centralizado e status online
 st.markdown("""
-<div style='text-align: center; padding: 18px 24px; background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(14, 165, 233, 0.05) 100%); border: 1px solid rgba(37, 99, 235, 0.2); border-radius: 12px; margin-bottom: 24px;'>
-    <p style='margin: 0; font-size: 1.2rem; font-weight: 700; color: #FFFFFF; letter-spacing: 0.02em; font-family: Space Grotesk, sans-serif;'>⚡ AG-MTE <span style='color: #94A3B8; font-weight: 400;'>|</span> <span style='color: #94A3B8; font-weight: 400;'>Agente Master de Tecnologia e Processos</span></p>
+<div style='text-align: center; padding: 20px 24px; background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(14, 165, 233, 0.05) 100%); border: 1px solid rgba(37, 99, 235, 0.2); border-radius: 12px; margin-bottom: 24px;'>
+    <p style='margin: 0 0 8px 0; font-size: 1.3rem; font-weight: 700; color: #FFFFFF; letter-spacing: 0.02em; font-family: Space Grotesk, sans-serif;'>⚡ AG-MTE <span style='color: #64748B; font-weight: 300;'>|</span> <span style='color: #94A3B8; font-weight: 400;'>Agente Master de Tecnologia e Processos</span></p>
+    <div style='display: flex; align-items: center; justify-content: center; gap: 8px;'>
+        <span style='width: 8px; height: 8px; background: #10B981; border-radius: 50%; box-shadow: 0 0 8px #10B981;'></span>
+        <span style='color: #10B981; font-size: 0.85rem; font-weight: 600;'>Sistema Online</span>
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
